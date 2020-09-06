@@ -19,6 +19,7 @@ struct ListNode
     std::string data;
 };
 
+// not multythreaded
 class List
 {
     using simplechar_t = char;
