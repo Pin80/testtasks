@@ -49,12 +49,14 @@ public:
         }
         catch (...)
         {
-            deinit();
+            clear();
+            throw;
         }
     }
     // сохранение в файл (файл открыт с помощью fopen(path, "wb"))
     void Serialize (FILE * file)
     {
+        if (!file) return;
         ListNode * ptrnode = tail;
         while(ptrnode)
         {
@@ -80,6 +82,7 @@ public:
     // загрузка из файла (файл открыт с помощью fopen(path, "rb"))
     void Deserialize(FILE * file)
     {
+        if (!file) return;
         fseek(file, 0, SEEK_END);
         std::size_t fsize = ftell(file);
         fseek(file, 0, SEEK_SET);
@@ -87,10 +90,11 @@ public:
         charuptr_t pairbuff;
         simplechar_t * newbuf = new simplechar_t[fsize];
         pairbuff.reset(newbuf);
-        // last symbol should be zero
-        if (!newbuf[fsize - 1]) throw std::runtime_error("wrong file");
         auto real_size = fread(newbuf, 1, fsize, file);
-        if (real_size != fsize) throw std::runtime_error("file io error");
+        // last symbol should be zero
+        if (newbuf[fsize - 1]) throw std::runtime_error("wrong file");
+        if (real_size != fsize)
+            throw std::runtime_error("file io operation error");
         std::size_t buff_pos = 0;
         while(buff_pos < fsize)
         {
@@ -111,7 +115,7 @@ public:
             buff_pos += ptrnode->data.size() + 1;
         }
     }
-    void deinit() const noexcept
+    void clear() noexcept
     {
         ListNode * ptr = tail;
         while(ptr)
@@ -120,10 +124,12 @@ public:
             ptr = ptr->next;
             delete ptrtmp;
         }
+        head = nullptr;
+        tail = nullptr;
     }
     ~List()
     {
-        deinit();
+        clear();
     }
 private:
     ListNode * head = nullptr;

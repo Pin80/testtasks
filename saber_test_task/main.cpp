@@ -111,6 +111,7 @@ void test_list()
 {
     try
     {
+
         List l = {
             "qwerty", "1234567890","", "Hello World!", "zxcvbnm", "asdfghj"
         };
@@ -123,6 +124,26 @@ void test_list()
         l2.Deserialize(file);
         std::cout << l2.GetText();
         fclose(file2);
+
+        FILE * file3 = fopen("empty.bin","wb");
+        fclose(file3);
+
+        FILE * file4 = fopen("wrong.bin","wb");
+        char arr[] = "1234";
+        fwrite(arr, 4, 1, file4);
+        fclose(file4);
+
+        FILE * file5 = fopen("empty.bin","wb");
+        List l5;
+        l5.Deserialize(file5);
+        std::cout << l5.GetText();
+        fclose(file5);
+
+        FILE * file6 = fopen("wrong.bin","rb");
+        List l6;
+        // l6.Deserialize(file6); // raise exception
+        std::cout << l6.GetText();
+        fclose(file6);
     }
     catch (std::runtime_error& _e)
     {
@@ -137,8 +158,8 @@ void test_list()
 int main()
 {
     cout << "Hello Saber!" << endl;
-    test_binary();
+    //test_binary();
     //test_remdups();
-    //test_list();
+    test_list();
     return 0;
 }
