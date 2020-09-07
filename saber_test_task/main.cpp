@@ -31,6 +31,27 @@ std::string toBinaryRepr(T1 _i)
     return result;
 }
 
+// fast version
+template<typename T1>
+std::string toBinaryRepr2(T1 _i)
+{
+    const std::string ctable[] = {"0000", "0001", "0010", "0011",
+                                  "0100", "0101", "0110", "0111",
+                                  "1000", "1001", "1010", "1011",
+                                  "1100", "1101", "1110", "1111"};
+    typename std::make_unsigned<T1>::type eq = _i;
+    std::string result;
+
+    static constexpr auto halfwords = sizeof(T1)*2;
+    for (auto i1 = 0; i1 < halfwords; i1++)
+    {
+        auto mod = eq % 16;
+        eq /= 16;
+        result = ctable[mod] + result;
+    }
+    return result;
+}
+
 // Напишите функцию, удаляющую последовательно дублирующиеся символы в строке:
 void RemoveDups(char* str)
 {
@@ -55,11 +76,11 @@ void RemoveDups(char* str)
 void test_binary()
 {
 
-    auto str = toBinaryRepr<char>(-35);
+    auto str = toBinaryRepr2<char>(-35);
     std::cout << "result:" << str << std::endl;
-    str = toBinaryRepr<short>(-35);
+    str = toBinaryRepr2<short>(-35);
     std::cout << "result:" << str << std::endl;
-    str = toBinaryRepr(-35);
+    str = toBinaryRepr2(-35);
     std::cout << "result:" << str << std::endl;
 
     // str = toBinaryRepr<double>(-35); // error
@@ -94,6 +115,9 @@ void test_binary()
     std::cout << "result:" << str << std::endl;
 }
 
+// Из примера видно что только последвательно дублирующие
+// символы надо удалить, но уникальность
+// каждого символа в строке не требуется
 void test_remdups()
 {
     // пример использования
@@ -158,8 +182,8 @@ void test_list()
 int main()
 {
     cout << "Hello Saber!" << endl;
-    //test_binary();
-    //test_remdups();
+    test_binary();
+    test_remdups();
     test_list();
     return 0;
 }
