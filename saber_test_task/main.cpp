@@ -37,20 +37,28 @@ std::string toBinaryRepr2(T1 _i)
 {
     static_assert(std::is_integral<T1>::value, "Type is not integral");
     static_assert(std::is_signed<T1>::value, "Type is not signed");
-    const std::string ctable[] = {"0000", "0001", "0010", "0011",
+    const char* ctable[] = {"0000", "0001", "0010", "0011",
                                   "0100", "0101", "0110", "0111",
                                   "1000", "1001", "1010", "1011",
                                   "1100", "1101", "1110", "1111"};
     typename std::make_unsigned<T1>::type eq = _i;
-    std::string result;
-
-    static constexpr auto halfwords = sizeof(T1)*2;
-    for (auto i1 = 0; i1 < halfwords; i1++)
+    static constexpr auto BYTEBITS = 8;
+    static constexpr auto HBYTEBITS = BYTEBITS/2;
+    static constexpr auto MODULE = (1 << (BYTEBITS/2));
+    static constexpr auto BITS = sizeof (T1)* BYTEBITS;
+    static constexpr auto halfbytes = sizeof(T1)*2;
+    char result[BITS + 1];
+    for (auto i1 = 0; i1 < halfbytes; i1++)
     {
-        auto mod = eq % 16;
-        eq /= 16;
-        result = ctable[mod] + result;
+        auto mod = eq % MODULE;
+        eq /= MODULE;
+        auto base = HBYTEBITS*(halfbytes - 1 - i1);
+        result[base + 0] = ctable[mod][0];
+        result[base + 1] = ctable[mod][1];
+        result[base + 2] = ctable[mod][2];
+        result[base + 3] = ctable[mod][3];
     }
+    result[BITS] = 0;
     return result;
 }
 
@@ -80,7 +88,7 @@ void test_binary()
 
     auto str = toBinaryRepr2<char>(-35);
     std::cout << "result:" << str << std::endl;
-    str = toBinaryRepr2<short>(-35);
+    str = toBinaryRepr<short>(-35);
     std::cout << "result:" << str << std::endl;
     str = toBinaryRepr2(-35);
     std::cout << "result:" << str << std::endl;
@@ -88,25 +96,25 @@ void test_binary()
     // str = toBinaryRepr<double>(-35); // error
     // str = toBinaryRepr<unsigned>(35); // error
 
-    str = toBinaryRepr<char>(35);
+    str = toBinaryRepr2<char>(35);
     std::cout << "result:" << str << std::endl;
     str = toBinaryRepr<short>(35);
     std::cout << "result:" << str << std::endl;
-    str = toBinaryRepr(0x55AA23);
+    str = toBinaryRepr2(0x55AA23);
     std::cout << "result:" << str << std::endl;
 
-    str = toBinaryRepr<char>(0);
+    str = toBinaryRepr2<char>(0);
     std::cout << "result:" << str << std::endl;
     str = toBinaryRepr<short>(0);
     std::cout << "result:" << str << std::endl;
-    str = toBinaryRepr(0);
+    str = toBinaryRepr2(0);
     std::cout << "result:" << str << std::endl;
 
-    str = toBinaryRepr<char>(std::numeric_limits<char>::min());
+    str = toBinaryRepr2<char>(std::numeric_limits<char>::min());
     std::cout << "result:" << str << std::endl;
     str = toBinaryRepr<short>(std::numeric_limits<short>::min());
     std::cout << "result:" << str << std::endl;
-    str = toBinaryRepr(std::numeric_limits<int>::min());
+    str = toBinaryRepr2(std::numeric_limits<int>::min());
     std::cout << "result:" << str << std::endl;
 
     str = toBinaryRepr<char>(std::numeric_limits<char>::max());
