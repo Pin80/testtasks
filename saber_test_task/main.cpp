@@ -35,6 +35,8 @@ std::string toBinaryRepr(T1 _i)
 template<typename T1>
 std::string toBinaryRepr2(T1 _i)
 {
+    static_assert(std::is_integral<T1>::value, "Type is not integral");
+    static_assert(std::is_signed<T1>::value, "Type is not signed");
     const std::string ctable[] = {"0000", "0001", "0010", "0011",
                                   "0100", "0101", "0110", "0111",
                                   "1000", "1001", "1010", "1011",
