@@ -65,6 +65,7 @@ std::string toBinaryRepr2(T1 _i)
 // Напишите функцию, удаляющую последовательно дублирующиеся символы в строке:
 void RemoveDups(char* str)
 {
+    if (!str) return;
     std::size_t idx_new = 0;
     std::size_t idx_old = 0;
     char old_char = 0;
