@@ -29,7 +29,13 @@ public:
     List(const List& _l) = delete;
     List(const List&& _l) = delete;
     List& operator=(const List&) = delete;
-    List& operator=(const List&&) = delete;
+    List& operator=(List&& _l)
+    {
+        head = _l.head;
+        tail = _l.tail;
+        _l.head = nullptr;
+        _l.tail = nullptr;
+    }
     List(std::initializer_list<std::string>_list)
     {
         try
