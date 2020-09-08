@@ -27,7 +27,7 @@ class List
 public:
     List() = default;
     List(const List& _l) = delete;
-    List(const List&& _l) = delete;
+    List(List&& _l) = delete;
     List& operator=(const List&) = delete;
     List& operator=(List&& _l)
     {
