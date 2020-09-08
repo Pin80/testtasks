@@ -127,7 +127,7 @@ public:
         head = nullptr;
         tail = nullptr;
     }
-    ~List()
+    virtual ~List()
     {
         clear();
     }
