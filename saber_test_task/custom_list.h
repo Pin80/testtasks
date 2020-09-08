@@ -97,14 +97,14 @@ public:
         std::size_t buff_pos = 0;
         while(buff_pos < fsize)
         {
-            ListNode * ptrnode = new ListNode;
+            std::unique_ptr<ListNode> ptrnode = std::make_unique<ListNode>();
             ptrnode->prev = head;
             ptrnode->next = nullptr;
             if (head)
             {
-                head->next = ptrnode;
+                head->next = ptrnode.get();
             }
-            head = ptrnode;
+            head = ptrnode.get();
             if (!tail)
             {
                 tail = head;
@@ -112,6 +112,7 @@ public:
             const char* cptr = pairbuff.get() + buff_pos;
             ptrnode->data = cptr;
             buff_pos += ptrnode->data.size() + 1;
+            ptrnode.release();
         }
     }
     void clear() noexcept
