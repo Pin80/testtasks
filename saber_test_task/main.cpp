@@ -148,11 +148,11 @@ void test_list()
     FILE * file = nullptr;
     try
     {
-        List l = {
+        List l1 = {
             "qwerty", "1234567890","", "Hello World!", "zxcvbnm", "asdfghj"
         };
         file = fopen("dumplist.bin","wb");
-        l.Serialize(file);
+        l1.Serialize(file);
         fclose(file); file = nullptr;
 
         file = fopen("dumplist.bin","rb");

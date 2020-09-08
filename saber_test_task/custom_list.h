@@ -26,6 +26,10 @@ class List
     using charuptr_t = std::unique_ptr<simplechar_t[]>;
 public:
     List() = default;
+    List(const List& _l) = delete;
+    List(const List&& _l) = delete;
+    List& operator=(const List&) = delete;
+    List& operator=(const List&&) = delete;
     List(std::initializer_list<std::string>_list)
     {
         try
