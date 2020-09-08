@@ -55,7 +55,7 @@ public:
         }
     }
     // сохранение в файл (файл открыт с помощью fopen(path, "wb"))
-    void Serialize (FILE * file)
+    void Serialize (FILE * file) const noexcept
     {
         if (!file) return;
         ListNode * ptrnode = tail;
@@ -66,7 +66,7 @@ public:
             ptrnode = ptrnode->next;
         }
     }
-    std::string GetText()
+    std::string GetText() const
     {
         ListNode * ptrnode = tail;
         std::string result;
