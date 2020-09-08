@@ -140,6 +140,7 @@ void test_remdups()
     std::cout << "source:" << data2;
     RemoveDups(data2);
     std::cout << " result:" << data2 << std::endl; // “”
+    RemoveDups(nullptr);
 }
 
 void test_list()
