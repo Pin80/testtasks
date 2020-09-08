@@ -27,15 +27,16 @@ class List
 public:
     List() = default;
     List(const List& _l) = delete;
-    List(List&& _l) = delete;
-    List& operator=(const List&) = delete;
-    List& operator=(List&& _l)
+    List(List&& _l)
     {
+        if (&_l == this) return;
         head = _l.head;
         tail = _l.tail;
         _l.head = nullptr;
         _l.tail = nullptr;
     }
+    List& operator=(const List&) = delete;
+    List& operator=(List&& _l) = delete;
     List(std::initializer_list<std::string>_list)
     {
         try
