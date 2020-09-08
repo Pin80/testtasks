@@ -153,43 +153,44 @@ void test_list()
         };
         file = fopen("dumplist.bin","wb");
         l.Serialize(file);
-        fclose(file);
+        fclose(file); file = nullptr;
 
         file = fopen("dumplist.bin","rb");
         List l2;
         l2.Deserialize(file);
+        l2.Deserialize(file);
         std::cout << l2.GetText();
-        fclose(file);
+        fclose(file); file = nullptr;
 
         file = fopen("empty.bin","wb");
-        fclose(file);
+        fclose(file); file = nullptr;
 
         file = fopen("wrong.bin","wb");
         char arr[] = "1234";
         fwrite(arr, 4, 1, file);
-        fclose(file);
+        fclose(file); file = nullptr;
 
         file = fopen("empty.bin","wb");
         List l5;
         l5.Deserialize(file);
         std::cout << l5.GetText();
-        fclose(file);
+        fclose(file); file = nullptr;
 
         file = fopen("wrong.bin","rb");
         List l6;
         // l6.Deserialize(file6); // raise exception
         std::cout << l6.GetText();
-        fclose(file);
+        fclose(file); file = nullptr;
     }
     catch (std::runtime_error& _e)
     {
         std::cerr << "error:" << _e.what();
-        fclose(file);
+        if (file) fclose(file);
     }
     catch (...)
     {
         std::cerr << "unknow error!";
-        fclose(file);
+        if (file) fclose(file);
     }
 }
 
