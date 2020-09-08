@@ -109,7 +109,7 @@ public:
             {
                 tail = head;
             }
-            char* cptr = pairbuff.get() + buff_pos;
+            const char* cptr = pairbuff.get() + buff_pos;
             ptrnode->data = cptr;
             buff_pos += ptrnode->data.size() + 1;
         }

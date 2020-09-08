@@ -145,49 +145,51 @@ void test_remdups()
 
 void test_list()
 {
+    FILE * file = nullptr;
     try
     {
-
         List l = {
             "qwerty", "1234567890","", "Hello World!", "zxcvbnm", "asdfghj"
         };
-        FILE * file = fopen("dumplist.bin","wb");
+        file = fopen("dumplist.bin","wb");
         l.Serialize(file);
         fclose(file);
 
-        FILE * file2 = fopen("dumplist.bin","rb");
+        file = fopen("dumplist.bin","rb");
         List l2;
         l2.Deserialize(file);
         std::cout << l2.GetText();
-        fclose(file2);
+        fclose(file);
 
-        FILE * file3 = fopen("empty.bin","wb");
-        fclose(file3);
+        file = fopen("empty.bin","wb");
+        fclose(file);
 
-        FILE * file4 = fopen("wrong.bin","wb");
+        file = fopen("wrong.bin","wb");
         char arr[] = "1234";
-        fwrite(arr, 4, 1, file4);
-        fclose(file4);
+        fwrite(arr, 4, 1, file);
+        fclose(file);
 
-        FILE * file5 = fopen("empty.bin","wb");
+        file = fopen("empty.bin","wb");
         List l5;
-        l5.Deserialize(file5);
+        l5.Deserialize(file);
         std::cout << l5.GetText();
-        fclose(file5);
+        fclose(file);
 
-        FILE * file6 = fopen("wrong.bin","rb");
+        file = fopen("wrong.bin","rb");
         List l6;
         // l6.Deserialize(file6); // raise exception
         std::cout << l6.GetText();
-        fclose(file6);
+        fclose(file);
     }
     catch (std::runtime_error& _e)
     {
         std::cerr << "error:" << _e.what();
+        fclose(file);
     }
     catch (...)
     {
         std::cerr << "unknow error!";
+        fclose(file);
     }
 }
 
