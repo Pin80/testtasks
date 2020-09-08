@@ -61,7 +61,6 @@ public:
         ListNode * ptrnode = tail;
         while(ptrnode)
         {
-            ListNode * ptrtmp = ptrnode;
             auto size = ptrnode->data.size();
             fwrite(ptrnode->data.c_str(), size + 1, 1, file);
             ptrnode = ptrnode->next;
@@ -73,7 +72,6 @@ public:
         std::string result;
         while(ptrnode)
         {
-            ListNode * ptrtmp = ptrnode;
             result += ptrnode->data.c_str();
             result += '\n';
             ptrnode = ptrnode->next;
@@ -118,11 +116,11 @@ public:
     }
     void clear() noexcept
     {
-        ListNode * ptr = tail;
-        while(ptr)
+        ListNode * ptrnode = tail;
+        while(ptrnode)
         {
-            ListNode * ptrtmp = ptr;
-            ptr = ptr->next;
+            ListNode * ptrtmp = ptrnode;
+            ptrnode = ptrnode->next;
             delete ptrtmp;
         }
         head = nullptr;
